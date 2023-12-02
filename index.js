@@ -1,5 +1,6 @@
 import express from "express"
 import {users} from "./customRoutes/users.js"
+import {words} from "./customRoutes/words.js"
 const app = express()
 const port = 4000
 

@@ -22,11 +22,10 @@ export async function getUser(id) {
         FROM users
         WHERE id = ?
         `, [id])
-        //@ts-expect-error
         return rows[0]
     } catch (er) {
         throw new Error(
-            "could not find user!"
+            er
         )
     }
 
@@ -38,11 +37,10 @@ export async function getUserByName(name) {
         FROM users
         WHERE username = ?
         `, [name])
-        //@ts-expect-error
         return rows[0]
     } catch (er) {
         throw new Error(
-            "could not find user!"
+            er
         )
     }
 
@@ -52,12 +50,11 @@ export async function createCollaborator(userName, passwordHash) {
     try {
         const [result] = await pool.query(`INSERT INTO users (username, password_hash, role_id)
         VALUES (?, ?, 2)`, [userName, passwordHash])
-        //@ts-expect-error
         const id = result.insertId
         return getUser(id)
     } catch (er) {
         throw new Error(
-            "could not add collaborator!"
+            er
         )
     }
 
@@ -70,11 +67,10 @@ export async function getToken(id) {
         FROM reg_tokens
         WHERE id = ?
         `, [id])
-        //@ts-expect-error
         return rows[0]
     } catch (er) {
         throw new Error(
-            "Failed fetching token!"
+            er
         )
     }
 
@@ -92,7 +88,7 @@ export async function revokeToken(token) {
         console.log(result)
     } catch (er) {
         throw new Error(
-            "could not revoke token!"
+            er
         )
     }
 }
@@ -104,12 +100,11 @@ export const createAdmin = async (userName, passHash) => {
         INSERT INTO users (username, password_hash, role_id)
         VALUES (?,?, 1)
         `, [userName, passHash])
-        //@ts-expect-error
         const id = result.insertId
         return getUser(id)
     } catch (er) {
         throw new Error(
-            "could not Add Admin!"
+            er
         )
     }
 }
@@ -122,29 +117,28 @@ export const getWord = async (id) => {
         FROM words
         WHERE id = ?
         `, [id])
-        //@ts-expect-error
         return rows[0]
     } catch (er) {
         throw new Error(
-            "could not find word!"
+            er
         )
     }
 }
 
 
 // function to add a new word to the db
-export const addWord = async ( word, meaning, example = null, similes = null, contributorId = null ) => {
+export const addWord = async (word, meaning, example, similes, contributorId) => {
     try {
         const [result] = await pool.query(`
-        INSERT INTO users (word, meaning, examples, similes, contributor_id)
+        INSERT INTO words (word, meaning, examples, similes, contributor_id)
         VALUES (?, ?, ?, ?, ?)
         `, [word, meaning, example, similes, contributorId])
-        //@ts-expect-error
+        console.log(result)
         const id = result.insertId
         return getWord(id)
     } catch (er) {
         throw new Error(
-            "could not Add word!"
+            er
         )
     }
 }
