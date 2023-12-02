@@ -37,7 +37,7 @@ router.post("/generate/regtoken", async (req, res) => {
         const hashedPassword = admin.password_hash
         const isUser = await bycrypt.compare(password, hashedPassword)
         if (isUser && admin.role_id === 1) {
-            const token = jwt.sign(admin, process.env.MY_SECRET2, { expiresIn: "1h" })
+            const token = jwt.sign(admin, process.env.MY_SECRET2, { expiresIn: "24h" })
             res.status(200).json({
                 token
             })
