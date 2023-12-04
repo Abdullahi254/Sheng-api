@@ -1,5 +1,5 @@
 import express from "express"
-import { addWord } from "../database/database.js"
+import { addWord, getWordsByLetter } from "../database/database.js"
 import { tokenChecker } from "../middleware/middleware.js"
 
 const router = express.Router()
@@ -15,6 +15,17 @@ router.post("/word", tokenChecker, async (req, res) => {
         res.status(200).json(result)
     } catch (er) {
         res.status(500).json({ error: er.message})
+    }
+})
+
+router.get("/word", async(req, res)=>{
+    // getting list of words based on the starting letter
+    try{
+        const letter = req.query.letter
+        const result = await getWordsByLetter(letter)
+        res.status(200).json(result)
+    }catch(er){
+        res.status(500).json({error: er.message})
     }
 })
 

@@ -129,16 +129,30 @@ export const getWord = async (id) => {
 // function to add a new word to the db
 export const addWord = async (word, meaning, example, similes, contributorId) => {
     try {
+        // converting word to capital letter
+        const newWord = word.toUpperCase()
         const [result] = await pool.query(`
         INSERT INTO words (word, meaning, examples, similes, contributor_id)
         VALUES (?, ?, ?, ?, ?)
-        `, [word, meaning, example, similes, contributorId])
-        console.log(result)
+        `, [newWord, meaning, example, similes, contributorId])
         const id = result.insertId
         return getWord(id)
     } catch (er) {
         throw new Error(
             er
         )
+    }
+}
+
+//function to get list of words based on the starting letter
+export const getWordsByLetter = async(letter)=>{
+    const newLetter = letter.toUpperCase()
+    try{
+        const [result] = await pool.query(`
+            SELECT * FROM words WHERE word LIKE '${newLetter}%'
+        `)
+        return(result)
+    }catch(er){
+        throw new Error(er)
     }
 }
