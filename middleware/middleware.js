@@ -43,7 +43,7 @@ export const tokenChecker = async function (req, res, next) {
     next()
   } catch (er) {
     const error = new Error("Invalid auth token")
-    error.status = 500
+    error.status = 403
     next(error)
   }
 }
@@ -56,7 +56,7 @@ export const regTokenChecker = async function (req, res, next) {
     next()
   } catch (er) {
     const error = new Error("Invalid auth token")
-    error.status = 500
+    error.status = 403
     next(error)
   }
 }
