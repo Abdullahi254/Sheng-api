@@ -125,6 +125,22 @@ export const getWord = async (id) => {
     }
 }
 
+// function to get word from db by word
+export const getWordByWord = async (word) => {
+    try {
+        const theWord = word.toUpperCase()
+        const [rows] = await pool.query(`
+        SELECT *
+        FROM words
+        WHERE word = ?
+        `, [theWord])
+        return rows[0]
+    } catch (er) {
+        throw new Error(
+            er
+        )
+    }
+}
 
 // function to add a new word to the db
 export const addWord = async (word, meaning, example, similes, contributorId) => {
@@ -144,15 +160,41 @@ export const addWord = async (word, meaning, example, similes, contributorId) =>
     }
 }
 
+export const editWord = async (word, meaning, examples, similes, wordId) => {
+    try {
+        // converting word to capital letter
+        const newWord = word.toUpperCase()
+        const [result] = await pool.query(`
+        UPDATE words
+        SET
+        word = ?,
+        meaning = ?,
+        examples = ?,
+        similes = ?
+        WHERE id = ?
+        `, [newWord, meaning, examples, similes, wordId])
+        return {
+            word: word,
+            meaning: meaning,
+            examples: JSON.parse(examples),
+            similes: JSON.parse(similes)
+        }
+    } catch (er) {
+        throw new Error(
+            er
+        )
+    }
+}
+
 //function to get list of words based on the starting letter
-export const getWordsByLetter = async(letter)=>{
+export const getWordsByLetter = async (letter) => {
     const newLetter = letter.toUpperCase()
-    try{
+    try {
         const [result] = await pool.query(`
             SELECT * FROM words WHERE word LIKE '${newLetter}%'
         `)
-        return(result)
-    }catch(er){
+        return (result)
+    } catch (er) {
         throw new Error(er)
     }
 }
