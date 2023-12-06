@@ -143,14 +143,14 @@ export const getWordByWord = async (word) => {
 }
 
 // function to add a new word to the db
-export const addWord = async (word, meaning, example, similes, contributorId) => {
+export const addWord = async (word, meaning, example, synonym, contributorId) => {
     try {
         // converting word to capital letter
         const newWord = word.toUpperCase()
         const [result] = await pool.query(`
-        INSERT INTO words (word, meaning, examples, similes, contributor_id)
+        INSERT INTO words (word, meaning, examples, synonym, contributor_id)
         VALUES (?, ?, ?, ?, ?)
-        `, [newWord, meaning, example, similes, contributorId])
+        `, [newWord, meaning, example, synonym, contributorId])
         const id = result.insertId
         return getWord(id)
     } catch (er) {
@@ -160,7 +160,7 @@ export const addWord = async (word, meaning, example, similes, contributorId) =>
     }
 }
 
-export const editWord = async (word, meaning, examples, similes, wordId) => {
+export const editWord = async (word, meaning, examples, synonym, wordId) => {
     try {
         // converting word to capital letter
         const newWord = word.toUpperCase()
@@ -170,14 +170,14 @@ export const editWord = async (word, meaning, examples, similes, wordId) => {
         word = ?,
         meaning = ?,
         examples = ?,
-        similes = ?
+        synonym = ?
         WHERE id = ?
-        `, [newWord, meaning, examples, similes, wordId])
+        `, [newWord, meaning, examples, synonym, wordId])
         return {
             word: word,
             meaning: meaning,
             examples: JSON.parse(examples),
-            similes: JSON.parse(similes)
+            synonym: JSON.parse(synonym)
         }
     } catch (er) {
         throw new Error(

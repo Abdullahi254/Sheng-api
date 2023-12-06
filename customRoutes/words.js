@@ -7,11 +7,11 @@ const router = express.Router()
 router.post("/word", tokenChecker, async (req, res) => {
     // generating auth token to be used to access db as collaborator
     try {
-        const { word, meaning, example, similes } = req.body
+        const { word, meaning, example, synonym} = req.body
         const contributorId = req.body.user.id
         const result = await addWord(word, meaning,
             example ? JSON.stringify(example) : null,
-            similes ? JSON.stringify(similes) : null,
+            synonym ? JSON.stringify(synonym) : null,
             contributorId)
         res.status(200).json(result)
     } catch (er) {
@@ -54,7 +54,7 @@ router.get("/word/user", async (req, res) => {
 router.put("/word", tokenChecker, async (req, res) => {
     // editing word info(only the contributor can edit the word he/she added)
     try {
-        const { word, meaning, examples, similes } = req.body
+        const { word, meaning, examples, synonym } = req.body
         if (word) {
             const wordQuery = req.query.word
             const theWord = await getWordByWord(wordQuery ? wordQuery : '')
@@ -65,7 +65,7 @@ router.put("/word", tokenChecker, async (req, res) => {
                     word,
                     meaning ? meaning : theWord.meaning,
                     examples ? JSON.stringify(examples) : theWord.examples,
-                    similes ? JSON.stringify(similes) : theWord.similes,
+                    synonym ? JSON.stringify(synonym) : theWord.synonym,
                     theWord.id)
                 res.status(200).json(result)
             } else {
