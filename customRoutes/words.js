@@ -1,5 +1,5 @@
 import express from "express"
-import { addWord, editWord, getWordByWord, getWordsByLetter } from "../database/database.js"
+import { addWord, editWord, getWordByWord, getWordsByLetter, getWordsByUser } from "../database/database.js"
 import { tokenChecker } from "../middleware/middleware.js"
 
 const router = express.Router()
@@ -23,8 +23,29 @@ router.get("/word", async (req, res) => {
     // getting list of words based on the starting letter
     try {
         const letter = req.query.letter
-        const result = await getWordsByLetter(letter)
-        res.status(200).json(result)
+        if (letter) {
+            const result = await getWordsByLetter(letter)
+            res.status(200).json(result)
+        } else {
+            throw new Error("letter not defined!")
+        }
+
+    } catch (er) {
+        res.status(500).json({ error: er.message })
+    }
+})
+
+router.get("/word/user", async (req, res) => {
+    // get words created by a specific user
+    try {
+        const userId = req.query.id
+        if (userId) {
+            const result = await getWordsByUser(userId)
+            res.status(200).json(result)
+        } else {
+            throw new Error("Id not defined!")
+        }
+
     } catch (er) {
         res.status(500).json({ error: er.message })
     }

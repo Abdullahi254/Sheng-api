@@ -198,3 +198,29 @@ export const getWordsByLetter = async (letter) => {
         throw new Error(er)
     }
 }
+
+//function to get list of words based on the user ID
+export const getWordsByUser = async (id) => {
+    try {
+        const [result] = await pool.query(`
+            SELECT * FROM words WHERE contributor_id = ?
+        `, [id])
+        return (result)
+    } catch (er) {
+        throw new Error(er)
+    }
+}
+
+//function to get list of latest 5 words
+export const getLatestByUser = async (id) => {
+    try {
+        const [result] = await pool.query(`
+            SELECT * FROM words 
+            WHERE contributor_id = ?
+            LIMIT 5
+        `, [id])
+        return (result)
+    } catch (er) {
+        throw new Error(er)
+    }
+}

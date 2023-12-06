@@ -19,6 +19,7 @@ router.post("/generate/collabtoken", async (req, res) => {
         if (isUser) {
             const token = jwt.sign(user, process.env.MY_SECRET, { expiresIn: "1h" })
             res.status(200).json({
+                ...user,
                 token
             })
         } else {
