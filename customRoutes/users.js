@@ -66,21 +66,21 @@ router.post("/register", regTokenChecker, userNameChecker, signUppassChecker, as
     }
 })
 
-// router.post("/register/admin", userNameChecker, signUppassChecker, async (req, res) => {
-//     // special route to register admin
-//     try {
-//         const { userName, password } = req.body
-//         const hashedPassword = await bycrypt.hash(password, 10)
-//         const admin = await createAdmin(userName, hashedPassword)
-//         const token = jwt.sign(admin, process.env.MY_SECRET, {expiresIn: "1h"})
-//         res.status(200).json({
-//             user: admin,
-//             token
-//         })
-//     } catch (er) {
-//         res.status(500).json({error:"Failed to create Admin/ user might already exist"})
-//     }
-// })
+router.post("/register/admin", userNameChecker, signUppassChecker, async (req, res) => {
+    // special route to register admin
+    try {
+        const { userName, password } = req.body
+        const hashedPassword = await bycrypt.hash(password, 10)
+        const admin = await createAdmin(userName, hashedPassword)
+        const token = jwt.sign(admin, process.env.MY_SECRET, {expiresIn: "1h"})
+        res.status(200).json({
+            user: admin,
+            token
+        })
+    } catch (er) {
+        res.status(500).json({error:"Failed to create Admin/ user might already exist"})
+    }
+})
 
 router.put("/update", (req, res) => {
     // updating users details
