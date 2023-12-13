@@ -46,9 +46,46 @@ PUT /users/update
 #### Purpose
 Used by contributors to update their user details, such as username, password, etc.
 
-## Word Route (Work in Progress)
+## Word Route
+### 1. Add Word
 
-The Word Route is currently under development. Once completed, it will provide functionality to retrieve Sheng words from the database.
+#### Route
+```
+POST /api/word
+```
+
+#### Purpose
+Add a new word to the database.(User adding must either be a collaborator or admin)
+
+### 2. Get Words By Starting Letter
+
+#### Route
+```
+GET /api/word?letter=B
+```
+
+#### Purpose
+Gets a list of words that begin with a specified letter.
+
+### 3. Get Words By User Id
+
+#### Route
+```
+GET /api/word/user?id=16
+```
+
+#### Purpose
+Gets a list of words added by a specific user (using user's id)
+
+### 4. Edit word
+
+#### Route
+```
+PUT /api/word
+```
+
+#### Purpose
+Update word information i.e meaning, examples and synonyms
 
 ## Getting Started
 
