@@ -5,13 +5,13 @@ import { tokenChecker } from "../middleware/middleware.js"
 const router = express.Router()
 
 router.post("/word", tokenChecker, async (req, res) => {
-    // generating auth token to be used to access db as collaborator
+    // adding a word to the db
     try {
-        const { word, meaning, example, synonym} = req.body
+        const { word, meaning, examples, synonym} = req.body
         const contributorId = req.body.user.id
         const result = await addWord(word, meaning,
-            example ? JSON.stringify(example) : null,
-            synonym ? JSON.stringify(synonym) : null,
+            examples ? examples : null,
+            synonym ? synonym : null,
             contributorId)
         res.status(200).json(result)
     } catch (er) {
@@ -64,8 +64,8 @@ router.put("/word", tokenChecker, async (req, res) => {
                 const result = await editWord(
                     word,
                     meaning ? meaning : theWord.meaning,
-                    examples ? JSON.stringify(examples) : theWord.examples,
-                    synonym ? JSON.stringify(synonym) : theWord.synonym,
+                    examples ? examples : theWord.examples,
+                    synonym ? synonym : theWord.synonym,
                     theWord.id)
                 res.status(200).json(result)
             } else {

@@ -174,10 +174,10 @@ export const editWord = async (word, meaning, examples, synonym, wordId) => {
         WHERE id = ?
         `, [newWord, meaning, examples, synonym, wordId])
         return {
-            word: word,
+            word: newWord,
             meaning: meaning,
-            examples: JSON.parse(examples),
-            synonym: JSON.parse(synonym)
+            examples: examples,
+            synonym: synonym
         }
     } catch (er) {
         throw new Error(
