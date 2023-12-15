@@ -35,6 +35,22 @@ router.get("/word", async (req, res) => {
     }
 })
 
+router.get("/word-details", async (req, res) => {
+    // getting word detail from word param
+    try {
+        const word = req.query.word
+        if (word) {
+            const result = await getWordByWord(word)
+            res.status(200).json(result)
+        } else {
+            throw new Error("word not defined!")
+        }
+
+    } catch (er) {
+        res.status(500).json({ error: er.message })
+    }
+})
+
 router.get("/word/user", async (req, res) => {
     // get words created by a specific user
     try {
