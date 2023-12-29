@@ -1,7 +1,7 @@
 import express from "express"
 import bycrypt from "bcrypt"
 import { createCollaborator, getUserByName, createAdmin} from "../database/database.js"
-import { signUppassChecker, userNameChecker, regTokenChecker } from "../middleware/middleware.js"
+import { signUppassChecker, userNameChecker, regTokenChecker, tokenChecker } from "../middleware/middleware.js"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 
@@ -81,7 +81,12 @@ router.post("/register", regTokenChecker, userNameChecker, signUppassChecker, as
 //         res.status(500).json({error:"Failed to create Admin/ user might already exist"})
 //     }
 // })
-
+router.get("/checktoken", tokenChecker, async (req, res) => {
+    // check if token is valid
+    res.status(200).json({
+        ...req.body.user
+    })
+})
 router.put("/update", (req, res) => {
     // updating users details
     res.send("user updated")
