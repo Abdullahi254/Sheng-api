@@ -1,8 +1,8 @@
 import express from "express"
 import {users} from "./customRoutes/users.js"
 import {words} from "./customRoutes/words.js"
+import cors from "cors"
 const app = express()
-const cors = require('cors')
 const port = 4000
 
 app.use(cors())
