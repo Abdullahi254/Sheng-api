@@ -2,8 +2,10 @@ import express from "express"
 import {users} from "./customRoutes/users.js"
 import {words} from "./customRoutes/words.js"
 const app = express()
+const cors = require('cors')
 const port = 4000
 
+app.use(cors())
 app.use(express.json())
 
 app.use("/api", words)
